@@ -26,7 +26,10 @@ class Entry(models.Model):
     tags = models.ManyToManyField("Tag", related_name='entries')
 
     def __str__(self):
-        return f"Автор статьи: {self.author.username}; Теги: {[f'#{i.name}' for i in self.tags.all()]}"
+        str_tags = ''
+        for i in self.tags.all():
+            str_tags += '#' + str(i.name) + ', '
+        return f"Автор статьи: {self.author.username}; Теги: {str_tags[:-2]}"
 
 
     class Meta:
