@@ -8,14 +8,16 @@ class TrainView(View):
         # Создайте здесь запросы к БД
         max_self_esteem = Author.objects.aggregate(max_self_esteem=Max('self_esteem'))
         self.answer1 = Author.objects.filter(self_esteem=max_self_esteem['max_self_esteem'])
-        self.answer2 = None
-        self.answer3 = None
-        self.answer4 = None
+        max_entry_author = Entry.objects.aggregate(max_entry=Max('author'))
+        self.answer2 = Author.objects.get(entries=max_entry_author['max_entry'])
+        self.answer3 = Entry.objects.filter(tags__name__in=['Кино', 'Музыка'])
+        self.answer4 = Author.objects.filter(gender__in='ж').count()
         self.answer5 = None
-        self.answer6 = None
-        self.answer7 = None
-        self.answer8 = None
-        self.answer9 = None
+        self.answer6 = Author.objects.filter(authorprofile__stage__gte=1).filter(authorprofile__stage__lte=5)
+        max_age = Author.objects.aggregate(max_age=Max('age'))
+        self.answer7 = max_age['max_age']
+        self.answer8 = Author.objects.filter(age__isnull=False).count()
+        self.answer9 = Author.objects.filter(age__lte=25)
         self.answer10 = None
 
         context = {f'answer{index}': self.__dict__[f'answer{index}'] for index in range(1, 11)}
