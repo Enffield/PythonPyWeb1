@@ -12,7 +12,7 @@ class TrainView(View):
         self.answer2 = Author.objects.get(entries=max_entry_author['max_entry'])
         self.answer3 = Entry.objects.filter(tags__name__in=['Кино', 'Музыка'])
         self.answer4 = Author.objects.filter(gender__in='ж').count()
-        self.answer5 = None
+        self.answer5 = int(Author.objects.filter(status_rule=True).count() / Author.objects.count() * 100)
         self.answer6 = Author.objects.filter(authorprofile__stage__gte=1).filter(authorprofile__stage__lte=5)
         max_age = Author.objects.aggregate(max_age=Max('age'))
         self.answer7 = max_age['max_age']
