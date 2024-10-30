@@ -18,7 +18,7 @@ class TrainView(View):
         self.answer7 = max_age['max_age']
         self.answer8 = Author.objects.filter(age__isnull=False).count()
         self.answer9 = Author.objects.filter(age__lte=25)
-        self.answer10 = None
+        self.answer10 = Author.objects.annotate(count=Count('entries'))
 
         context = {f'answer{index}': self.__dict__[f'answer{index}'] for index in range(1, 11)}
 
